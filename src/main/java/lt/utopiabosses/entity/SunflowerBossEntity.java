@@ -402,12 +402,13 @@ public class SunflowerBossEntity extends HostileEntity implements GeoEntity {
                             LivingEntity seedTarget = this.getTarget();
                             if (seedTarget != null) {
                                 System.out.println("【葵花籽弹幕】发射种子 - 第" + animationTicks + "帧");
-                                
-                                // 每次发射5颗种子，形成密集弹幕
+                                  // 每次发射5颗种子，形成密集弹幕
                                 for (int i = 0; i < 5; i++) {
                                     fireSeedBarrage(seedTarget);
-                                    this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(),
-                                        SoundRegistry.ENTITY_SUNFLOWER_SHOOT, SoundCategory.HOSTILE, 2.0f, 1.0f);
+                                    if (!this.getWorld().isClient()) {
+                                        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(),
+                                            SoundRegistry.ENTITY_SUNFLOWER_SHOOT, SoundCategory.HOSTILE, 2.0f, 1.0f);
+                                    }
                                 }
                                 
                             }
@@ -2118,11 +2119,12 @@ public class SunflowerBossEntity extends HostileEntity implements GeoEntity {
             LivingEntity target = this.getTarget();
             if (target != null) {
                 System.out.println("【远程普通攻击】发射种子 - 第" + currentFrame + "帧");
-                
-                // 发射单个种子
+                  // 发射单个种子
                 fireSimpleSeed(target);
-                this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(),
-                    SoundRegistry.ENTITY_SUNFLOWER_SHOOT, SoundCategory.HOSTILE, 2.0f, 1.0f);
+                if (!this.getWorld().isClient()) {
+                    this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(),
+                        SoundRegistry.ENTITY_SUNFLOWER_SHOOT, SoundCategory.HOSTILE, 2.0f, 1.0f);
+                }
                 
             }
         }

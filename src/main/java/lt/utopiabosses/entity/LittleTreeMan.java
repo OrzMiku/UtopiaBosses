@@ -249,16 +249,17 @@ public class LittleTreeMan extends HostileEntity implements GeoEntity {
                 this.dataTracker.set(IS_SURPRISED, true);
                 surprisedTicks = 0;
                 hasSeenPlayer = true;
-                
-                // 播放惊讶音效
-                this.getWorld().playSound(
-                    null,
-                    this.getX(), this.getY(), this.getZ(),
-                    SoundEvents.ENTITY_VILLAGER_HURT,
-                    SoundCategory.HOSTILE,
-                    1.0F,
-                    1.5F // 较高的音调
-                );
+                  // 播放惊讶音效
+                if (!this.getWorld().isClient()) {
+                    this.getWorld().playSound(
+                        null,
+                        this.getX(), this.getY(), this.getZ(),
+                        SoundEvents.ENTITY_VILLAGER_HURT,
+                        SoundCategory.HOSTILE,
+                        1.0F,
+                        1.5F // 较高的音调
+                    );
+                }
             } else {
                 // 如果目标不是玩家，直接标记为已见过玩家，跳过惊讶阶段
                 hasSeenPlayer = true;
@@ -290,16 +291,17 @@ public class LittleTreeMan extends HostileEntity implements GeoEntity {
             explodingTicks = 0;
             boomAnimationTicks = 0;
             this.dataTracker.set(FLASH_INTENSITY, (byte)0);
-            
-            // 播放爆炸前的嘶嘶声
-            this.getWorld().playSound(
-                null,
-                this.getX(), this.getY(), this.getZ(),
-                SoundEvents.ENTITY_CREEPER_PRIMED,
-                SoundCategory.HOSTILE,
-                1.0F,
-                1.0F
-            );
+              // 播放爆炸前的嘶嘶声
+            if (!this.getWorld().isClient()) {
+                this.getWorld().playSound(
+                    null,
+                    this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.ENTITY_CREEPER_PRIMED,
+                    SoundCategory.HOSTILE,
+                    1.0F,
+                    1.0F
+                );
+            }
         }
     }
     
@@ -307,16 +309,17 @@ public class LittleTreeMan extends HostileEntity implements GeoEntity {
      * 执行爆炸效果
      */
     private void explode() {
-        if (!this.getWorld().isClient()) {
-            // 播放爆炸音效
-            this.getWorld().playSound(
-                null,
-                this.getX(), this.getY(), this.getZ(),
-                SoundEvents.ENTITY_GENERIC_EXPLODE,
-                SoundCategory.BLOCKS,
-                4.0F,
-                (1.0F + (this.getWorld().random.nextFloat() - this.getWorld().random.nextFloat()) * 0.2F) * 0.7F
-            );
+        if (!this.getWorld().isClient()) {            // 播放爆炸音效
+            if (!this.getWorld().isClient()) {
+                this.getWorld().playSound(
+                    null,
+                    this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.ENTITY_GENERIC_EXPLODE,
+                    SoundCategory.BLOCKS,
+                    4.0F,
+                    (1.0F + (this.getWorld().random.nextFloat() - this.getWorld().random.nextFloat()) * 0.2F) * 0.7F
+                );
+            }
             
             ServerWorld serverWorld = (ServerWorld)this.getWorld();
             
